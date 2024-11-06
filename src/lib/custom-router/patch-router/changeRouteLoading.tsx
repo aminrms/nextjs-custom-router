@@ -1,20 +1,16 @@
 "use client"
-import LoadingComponent from '@/components/core/UI/loadings/PageLoadingComponent';
-import useGetPathname from '@/hooks/useGetPathname';
+import { usePathname } from 'next/navigation';
 import React, { useEffect, useState, type FC, type PropsWithChildren } from 'react'
-
 
 type ChangeRouteLoadingProps = PropsWithChildren
 const CHangeRouteLoading: FC<ChangeRouteLoadingProps> = ({ children }) => {
     const [showLoading, setShowLoading] = useState(false);
-    const [currentPath, setCurrentPath] = useState("")
-    const pathname = useGetPathname();
+    const pathname = usePathname();
     useEffect(() => {
         if (typeof window !== "undefined") {
             const getMessageCallback = (event: MessageEvent<any>) => {
                 if (event.data.type === 'change-route-start') {
                     setShowLoading(true);
-                    setCurrentPath(event.data?.data?.currentPath)
                 }
             };
             const removeMessageCallback = (event: MessageEvent<any>) => {
@@ -28,10 +24,10 @@ const CHangeRouteLoading: FC<ChangeRouteLoadingProps> = ({ children }) => {
     }, []);
     useEffect(() => {
         setShowLoading(false);
-    }, [pathname])
+    }, [pathname]);
     return (
         showLoading ?
-            <LoadingComponent />
+            <div>Loading...</div>
             : children
     )
 }
